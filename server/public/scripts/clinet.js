@@ -1,3 +1,4 @@
+
 console.log("Hello world");
 let firstNumber;
 let secondNumber;
@@ -76,28 +77,47 @@ const equal = () => {
     secondNumber: secondNumber,
     operation: operation,
     result: result
-  };
+  }
+  console.log("item first number", firstNumber);
+  console.log("item result", result);
 
-  axios.post('/calculatorData', postData)
-    .then(() => {
-      // After the server updates the calculatorData, retrieve the result
-      axios.get('/calculatorData')
-        .then((response) => {
-          // Update the result in the DOM
-          display.value = response.data.result;
+  axios.post('/calculatorData', postData).then((response) => {
+    console.log(response);
+    getItems()
+  }).catch((error) => {
+    console.log(error);
+    alert('Something Went Wrong')
+  })
+}
 
-          let calculatedTotal = document.querySelector('#calculatedTotal');
-          calculatedTotal.innerHTML = `
-<div>
-    <p> Calculated Total: ${postData.firstNumber} ${operation} ${postData.secondNumber} = ${postData.result}</p>
-  </div>
-`;
-        })
-        .catch((error) => {
-          console.log('Error retrieving calculator data:', error);
-        });
-    })
-    .catch((error) => {
-      console.log('Error updating calculator data:', error);
-    });
-};
+
+function getItems() {
+  axios.get('/calculatorData').then((response) => {
+    console.log("success", response.data);
+    let calculateSum = response.data
+    renderToDom(calculateSum)
+  }).catch((error) => {
+    console.log(error);
+    alert("Something Went Wrong")
+  })
+}
+
+function renderToDom(calculateSum) {
+  let calculatedTotal = document.querySelector('#calculatedTotal');
+  calculatedTotal.innerHTML = '';
+  for (let postData of calculateSum) {
+
+    calculatedTotal.innerHTML += `
+      <div>
+           <p> Calculated Total: ${postData.firstNumber} ${operation} ${postData.secondNumber} </p>
+         <br>
+         <p> Result: ${postData.result} </p>
+       </div>`
+      ;
+
+
+  }
+}
+
+
+

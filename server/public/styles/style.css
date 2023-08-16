@@ -1,5 +1,5 @@
 body {
-    overflow: hidden;
+    overflow: scroll;
   
     background: linear-gradient(#f4f4ed, white);
   }

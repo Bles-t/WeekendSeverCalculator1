@@ -11,17 +11,21 @@ app.use(express.static('server/public'));
 //   result: result
 // }
 
+let calculateArr = []
+
+
 // POST request to update cal data
 app.post('/calculatorData', (req, res) => {
   calculatorData = req.body;
   console.log('Updated calculator data:', calculatorData);
+  calculateArr.push(calculatorData)
   res.sendStatus(200);
 });
 
 // GET request to retrieve calculator data
 app.get('/calculatorData', (req, res) => {
   console.log('Sending calculator data:', calculatorData);
-  res.json(calculatorData);
+  res.json(calculateArr);
 });
 
 app.listen(port, function () {
